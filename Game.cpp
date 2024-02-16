@@ -1,6 +1,9 @@
 #include "Game.h"
 
+Game* Game::instance = nullptr;
+
 bool Game::init(const char* title, int xpos, int ypos, int width, int height, bool fullscreen) {
+    
     int flags = 0;
     if (fullscreen == true) flags = SDL_WINDOW_FULLSCREEN;
     // init the window
@@ -34,6 +37,9 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, bo
     if (!TheTextureManager::Instance()->load("assets/animate-alpha.png", "animate", renderer)) 
         return false;
 
+    gameObjects.push_back(new Player(new LoaderParams(100, 100, 128, 82, "animate")));
+	gameObjects.push_back(new Enemy(new LoaderParams(300, 300, 128, 82, "animate")));
+
     std::cout << "init success\n";
     isGameRunning = true; // Everything initialized successfully, start the main loop
     
@@ -47,8 +53,10 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 void Game::render() {
     SDL_RenderClear(renderer); // clear the renderer to draw the color
     
-    TheTextureManager::Instance()->draw("animate", 0, 0, 137, 82, renderer);
-    TheTextureManager::Instance()->drawFrame("animate", 100, 100, 137, 82, 1, currentFrame, renderer);
+    for(std::vector<GameObject*>::size_type i = 0; i != gameObjects.size(); i++) {
+		gameObjects[i]->draw();
+	}
+
 
     SDL_RenderPresent(renderer); // draw the screen
 }
@@ -74,5 +82,7 @@ void Game::handleEvents() {
 }
 
 void Game::update() {
-    currentFrame = int((SDL_GetTicks() / 100) % 6);
+    for(std::vector<GameObject*>::size_type i = 0; i != gameObjects.size(); ++i) {
+        gameObjects[i]->update(); 
+    }
 }
