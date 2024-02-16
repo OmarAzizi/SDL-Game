@@ -12,7 +12,7 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, bo
         // renderer init success
         if (renderer != 0) { 
             std::cout << "Renderer creation success\n";
-            SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+            SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
         } else {
             std::cout << "renderer init failed\n";
             return false; // Renderer init fail
@@ -30,6 +30,10 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, bo
         return false;
     }
 
+    // To load texture with id "animate"
+    if (!TheTextureManager::Instance()->load("assets/animate-alpha.png", "animate", renderer)) 
+        return false;
+
     std::cout << "init success\n";
     isGameRunning = true; // Everything initialized successfully, start the main loop
     
@@ -42,6 +46,10 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 */
 void Game::render() {
     SDL_RenderClear(renderer); // clear the renderer to draw the color
+    
+    TheTextureManager::Instance()->draw("animate", 0, 0, 137, 82, renderer);
+    TheTextureManager::Instance()->drawFrame("animate", 100, 100, 137, 82, 1, currentFrame, renderer);
+
     SDL_RenderPresent(renderer); // draw the screen
 }
 
@@ -63,4 +71,8 @@ void Game::handleEvents() {
             default: break;
         }
     }
+}
+
+void Game::update() {
+    currentFrame = int((SDL_GetTicks() / 100) % 6);
 }
