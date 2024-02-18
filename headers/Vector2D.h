@@ -1,3 +1,6 @@
+#ifndef __VECTOR_2D_H__
+#define __VECTOR_2D_H__
+
 #include <cmath>
 #include <math.h>
 
@@ -66,3 +69,5 @@ public:
     }
     
 };
+
+#endif
