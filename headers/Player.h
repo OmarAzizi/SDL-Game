@@ -1,15 +1,18 @@
-#ifndef __PLAYER_H__
-#define __PLAYER_H__
+#ifndef __Player__
+#define __Player__
 
+#include <string>
 #include "SDLGameObject.h"
 
-class Player : public SDLGameObject {
+class Player : public SDLGameObject
+{
 public:
-    Player(const LoaderParams* params);
 
-    void draw();
-    void update();
-    void clean();
+	Player(const LoaderParams* pParams);
+
+	void draw();
+	void update();
+	void clean();
 };
 
-#endif
+#endif // __Player__
