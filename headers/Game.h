@@ -32,6 +32,7 @@ public:
     void handleEvents();
     void clean();
     void draw();
+    void quit() { isGameRunning = false; }
     
     bool isRunning() { return isGameRunning; }
 

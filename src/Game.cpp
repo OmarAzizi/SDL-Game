@@ -1,4 +1,5 @@
 #include "../headers/Game.h"
+#include "../headers/InputHandler.h"
 
 Game* Game::instance = nullptr;
 
@@ -68,18 +69,7 @@ void Game::clean() {
     SDL_Quit();
 }
 
-void Game::handleEvents() {
-    SDL_Event event;
-    
-    if (SDL_PollEvent(&event)) {
-        switch (event.type) {
-            case SDL_QUIT:
-                isGameRunning = false;
-                break;
-            default: break;
-        }
-    }
-}
+void Game::handleEvents() { TheInputHandler::Instance()->update(); }
 
 void Game::update() {
     for(std::vector<GameObject*>::size_type i = 0; i != gameObjects.size(); ++i) {
